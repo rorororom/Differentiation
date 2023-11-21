@@ -1,0 +1,16 @@
+digraph tree {
+	node [shape=Mrecord, style=filled, fillcolor="#bba6cd", color="#552d7b"];
+976 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#d5a1a7", fontsize=14, label=" - "];
+	976 -> 1040;
+1040 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#6495ed", fontsize=14, label=" - "];
+	1040 -> 1104;
+1104 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#6495ed", fontsize=14, label=" 300 "];
+	1040 -> 1168;
+1168 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" 100 "];
+	976 -> 1232;
+1232 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" - "];
+	1232 -> 1296;
+1296 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#6495ed", fontsize=14, label=" 20 "];
+	1232 -> 1360;
+1360 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" 10 "];
+}
