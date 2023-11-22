@@ -2,13 +2,13 @@
 #define DIFFER
 
 #include <stdlib.h>
+#include "readFromFileInBuffer.h"
+
+#define CREAT_NODE(node) Node* node = (Node*)malloc(sizeof(Node))
 
 const int MAX_LEN = 256;
-
-struct Buffer {
-    char *buffer;
-    size_t size;
-};
+const int MAX_VARIABLES = 10;
+const int capacity = 10;
 
 typedef struct Node {
     int type;
@@ -24,6 +24,17 @@ typedef struct Tree {
     int size;
 } Tree;
 
+typedef struct VariableData {
+    char* name;
+    int value;
+} VariableData;
+
+typedef struct Variables {
+    VariableData* data;
+    int capacity;
+    int size;
+} Variables;
+
 enum OPERATION{
     OperError = -1,
     SUB,
@@ -34,7 +45,8 @@ enum OPERATION{
 
 enum TYPE{
     INT,
-    OPERAT
+    OPERAT,
+    VARIEBL
 };
 
 enum DIRECTION{
@@ -42,33 +54,44 @@ enum DIRECTION{
     RIGHT
 };
 
-void CtorRoot(Tree* tree);
+void CtorRootAndVariebles(Tree* tree, Variables* arrayVar);
+void TreeAndVarieblesDtor(Tree* tree, Variables* arrayVar);
 
-void BuildTreeFromFile(const char* filename, Tree* tree);
-void GetFileSize (FILE* file, struct Buffer* array);
-void ReadFileInBuffer (FILE *fp, struct Buffer* array);
-void FillText (struct Buffer* array);
+Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 
-Node* ReadFromBuffer(Buffer* array, Node* currentNode);
-char* ReadSlovo(Buffer* array);
+void BuildTreeFromFile(const char* filename, Tree* tree, Variables* arrayVar);
 
-Node* BuildTreeFromBuffer(struct Buffer* array, int* index);
-void ProverkaStr(Node* node, const char* value);
+//Node* ReadFromBuffer(Buffer* array, Node* currentNode);
+char* GetWord(Buffer* array);
+
+//Node* BuildTreeFromBuffer(struct Buffer* array, int* index, Variables* arrayVar);
+void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar);
 
 char IssuesOperation(Node* node);
-void GenerateImage(Tree* tree);
+void GenerateImage(Tree* tree, Variables* arrayVar);
 void GenerateGraphImage();
 
-int EvaluateExpression(struct Node* node);
+int EvaluateExpression(Node* node, Variables* arrayVar);
 
-void PrintTreeToFile(Node* node);
-void PrintNode(Node* node, FILE* file);
-void PrintIntNode(Node* node, FILE* file);
-void PrintParentNorNull(Node* node, FILE* file);
-void PrintParentNull(Node* node, FILE* file);
+void PrintTreeToFileWithoutBrackets(Node* node, Variables* arrayVar);
+void PrintNode(Node* node, FILE* file, Variables* arrayVar);
+void PrintIntNode(Node* node, FILE* file, Variables* arrayVar);
+void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar);
+void PrintParentNull(Node* node, FILE* file, Variables* arrayVar);
 
 int CheckingPriorityOperation(int operation);
 
-#define CREAT_NODE(node) Node* node = (Node*)malloc(sizeof(Node))
+void PrintInFileInfForm(Node* node, Variables* arrayVar);
+void PrintNodeInfForm(Node* node, FILE* file, Variables* arrayVar);
+
+char* FromOperationToWord(int operation);
+
+void PrintTreeLaTex(Node* node, Variables* arrayVar);
+void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar);
+void PrintNodeTex(Node* node, FILE* file, Variables* arrayVar);
+void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar);
+void PrintIntNodeTex(Node* node, FILE* file, Variables* arrayVar);
+
+//VariableData* findOrCreateVariable(Variables* arrayVar, const char* name);
 
 #endif

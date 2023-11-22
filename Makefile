@@ -14,7 +14,7 @@ CXXFLAGS =  -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-
 			-fstack-protector -fstrict-overflow -fno-omit-frame-pointer -Wlarger-than=8192         \
 			-Wstack-usage=8192 -fsanitize=address,leak,undefined -fPIE -Werror=vla
 
-SOURCES = main.cpp differ.cpp
+SOURCES = main.cpp differ.cpp readFromFileInBuffer.cpp
 OBJECTS = $(SOURCES:%.cpp=%.o)
 EXECUTABLE = differentiation.out
 
@@ -33,7 +33,7 @@ $(OBJ_DIR)/%.o: %.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 run:
-	./$(EXECUTABLE) -b DataBase.txt -f printoutAK.txt -m 1
+	./$(EXECUTABLE)
 
 run_and_gen_image:
 	./$(EXECUTABLE)

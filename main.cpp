@@ -7,16 +7,22 @@
 int main()
 {
     Tree tree = {};
-    CtorRoot(&tree);
+    Variables array = {};
 
-    BuildTreeFromFile("defPref.txt", &tree);
+    CtorRootAndVariebles(&tree, &array);
 
-    int result = EvaluateExpression(tree.rootTree);
+    BuildTreeFromFile("defInf.txt", &tree, &array);
+
+    int result = EvaluateExpression(tree.rootTree, &array);
 
     printf("%d\n", result);
-    GenerateImage(&tree);
+    GenerateImage(&tree, &array);
     GenerateGraphImage();
 
-    PrintTreeToFile(tree.rootTree);
+    PrintTreeToFileWithoutBrackets(tree.rootTree, &array);
+    PrintInFileInfForm(tree.rootTree, &array);
+    PrintTreeLaTex(tree.rootTree, &array);
+
+    TreeAndVarieblesDtor(&tree, &array);
     return 0;
 }
