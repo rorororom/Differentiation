@@ -11,7 +11,7 @@ int main()
 
     CtorRootAndVariebles(&tree, &array);
 
-    BuildTreeFromFile("defInf.txt", &tree, &array);
+    BuildTreeFromFile("./file/defInf.txt", &tree, &array);
 
     int result = EvaluateExpression(tree.rootTree, &array);
 

@@ -353,7 +353,7 @@ void PrintTreeToFileWithoutBrackets(Node* node, Variables* arrayVar)
 {
     assert(node);
 
-    FILE* file = fopen("fileOutput.txt", "w");
+    FILE* file = fopen("./file/fileOutput.txt", "w");
     if (file == NULL)
     {
         printf("Ошибка при открытии файла.\n");
@@ -455,7 +455,7 @@ void PrintInFileInfForm(Node* node, Variables* arrayVar)
 {
     assert(node);
 
-    FILE* file = fopen("defInf.txt", "w");
+    FILE* file = fopen("./file/defInf.txt", "w");
     if (file == NULL)
     {
         printf("Ошибка при открытии файла.\n");
@@ -527,7 +527,7 @@ void PrintTreeLaTex(Node* node, Variables* arrayVar)
 {
     assert(node);
 
-    FILE* file = fopen("TEX.txt", "w");
+    FILE* file = fopen("./file/TEX.txt", "w");
     if (file == NULL)
     {
         printf("Ошибка при открытии файла.\n");
