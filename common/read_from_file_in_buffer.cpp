@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-#include "readFromFileInBuffer.h"
+#include "read_from_file_in_buffer..h"
 
 void ReadFileInBuffer (FILE *fp, Buffer* array)
 {

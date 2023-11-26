@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "differentiation.h"
-#include "log_funcs.h"
+#include "./common/log_funcs.h"
 #include "print_tree.h"
 
 int main()
@@ -26,7 +26,6 @@ int main()
 
     int result = EvaluateExpression(tree.rootTree, &array);
 
-    printf("%d\n", result);
     GenerateImage(&tree, &array);
 
     PrintTreeToFileWithoutBrackets(tree.rootTree, &array);
@@ -53,8 +52,6 @@ int main()
     } while (changeCount > 0);
 
     result = EvaluateExpression(treeDif.rootTree, &array);
-
-    printf("! = %d\n", result);
 
     TreeAndVarieblesDtor(&tree, &array);
     return 0;

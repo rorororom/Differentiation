@@ -7,9 +7,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "readFromFileInBuffer.h"
+#include "./common/read_from_file_in_buffer.h"
 #include "differentiation.h"
-#include "log_funcs.h"
+#include "./common/log_funcs.h"
 #include "print_tree.h"
 
 #define _ADD(left, right) NewNode(OPERAT, ADD, left, right)
@@ -378,7 +378,6 @@ int EvaluateExpression(Node* node, Variables* arrayVar)
     if (node->value == SIN || node->value == COS)
     {
         leftValue = EvaluateExpression(node->left, arrayVar);
-        printf("aaa = %d\n", leftValue);
     }
     else
     {
