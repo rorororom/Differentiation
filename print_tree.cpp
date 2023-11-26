@@ -212,6 +212,15 @@ void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar)
         PrintNodeTex(node->left, file, arrayVar);
         fprintf(file, ") ");
     }
+    else if (node->value == POW)
+    {
+        PrintNodeTex(node->left, file, arrayVar);
+        char* operation = IssuesOperation(node);
+        fprintf(file, "%s ", operation);
+        fprintf(file, "{ ");
+        PrintNodeTex(node->right, file, arrayVar);
+        fprintf(file, "} ");
+    }
     else
     {
         node->flagDirection = LEFT;
@@ -271,10 +280,19 @@ void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar)
         PrintNodeTex(node->right, file, arrayVar);
         fprintf(file, "} ");
     }
+    else if (node->value == POW)
+    {
+        PrintNodeTex(node->left, file, arrayVar);
+        char* operation = IssuesOperation(node);
+        fprintf(file, "%s( ", operation);
+        fprintf(file, "{ ");
+        PrintNodeTex(node->right, file, arrayVar);
+        fprintf(file, "} ");
+    }
     else if (node->value == SIN || node->value == COS)
     {
         char* operation = IssuesOperation(node);
-        fprintf(file, "%s( ", operation);
+        fprintf(file, "%s ", operation);
 
         PrintNodeTex(node->left, file, arrayVar);
         fprintf(file, ") ");

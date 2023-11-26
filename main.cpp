@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "./diff/differentiation.h"
-#include "./common/log_funcs.h"
-#include "./diff/print_tree.h"
+#include "differentiation.h"
+#include "log_funcs.h"
+#include "print_tree.h"
 
 int main()
 {

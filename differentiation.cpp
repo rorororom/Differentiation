@@ -7,9 +7,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "../common/read_from_file_in_buffer.h"
+#include "read_from_file_in_buffer.h"
 #include "differentiation.h"
-#include "../common/log_funcs.h"
+#include "log_funcs.h"
 #include "print_tree.h"
 
 #define _ADD(left, right) NewNode(OPERAT, ADD, left, right)
@@ -543,21 +543,21 @@ void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, T
         }
         else if ((*nowNode)->left->type == INT || (*nowNode)->right->type == INT )
         {
-            if (((*nowNode)->left->value == 1 && ((*nowNode)->value == MUL || (*nowNode)->value == DIV)) || ((*nowNode)->left->value == 0 && ((*nowNode)->value == ADD || (*nowNode)->value == SUB)))
+            if (((*nowNode)->left->value == 1 && ((*nowNode)->value == MUL || (*nowNode)->value == DIV || (*nowNode)->value == POW)) || ((*nowNode)->left->value == 0 && ((*nowNode)->value == ADD || (*nowNode)->value == SUB)))
             {
                 (*nowNode)->right->parent = (*nowNode)->parent;
                 *nowNode = (*nowNode)->right;
                 (*changeCount)++;
                 PrintTreeLaTex(treeDif->rootTree, arrayVar, text);
             }
-            else if (((*nowNode)->right->value == 1 && ((*nowNode)->value == MUL || (*nowNode)->value == DIV)) || ((*nowNode)->right->value == 0 && ((*nowNode)->value == ADD || (*nowNode)->value == SUB)))
+            else if ((*nowNode)->right->value == 1 && ((*nowNode)->value == MUL || (*nowNode)->value == DIV || (*nowNode)->value == POW) || ((*nowNode)->right->value == 0 && ((*nowNode)->value == ADD || (*nowNode)->value == SUB)))
             {
                 (*nowNode)->left->parent = (*nowNode)->parent;
                 *nowNode = (*nowNode)->left;
                 (*changeCount)++;
                 PrintTreeLaTex(treeDif->rootTree, arrayVar, text);
             }
-            else if ((((*nowNode)->right->value == 0)  || (*nowNode)->left->value == 0) && (*nowNode)->value == MUL)
+            else if ((((*nowNode)->right->value == 0 && (*nowNode)->type == INT) || (*nowNode)->left->value == 0 && (*nowNode)->type == INT) && (*nowNode)->value == MUL)
             {
                 CREAT_NODE(newNode);
                 newNode->value = 0;
