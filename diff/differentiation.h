@@ -2,7 +2,7 @@
 #define DIFFER
 
 #include <stdlib.h>
-#include "./common/read_from_file_in_buffer.h"
+#include "../common/read_from_file_in_buffer.h"
 
 #define CREAT_NODE(node) Node* node = (Node*)malloc(sizeof(Node))
 

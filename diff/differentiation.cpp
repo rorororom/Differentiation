@@ -7,9 +7,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "./common/read_from_file_in_buffer.h"
+#include "../common/read_from_file_in_buffer.h"
 #include "differentiation.h"
-#include "./common/log_funcs.h"
+#include "../common/log_funcs.h"
 #include "print_tree.h"
 
 #define _ADD(left, right) NewNode(OPERAT, ADD, left, right)
