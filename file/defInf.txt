@@ -1,1 +1,1 @@
-( ( ( nil 300 nil ) add ( nil 100 nil ) ) div ( ( nil 20 nil ) sub ( nil x nil ) ) ) 
+( ( ( nil x nil ) sin nil ) add ( nil 2 nil ) ) 

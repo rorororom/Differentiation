@@ -40,13 +40,17 @@ enum OPERATION{
     SUB,
     DIV,
     ADD,
-    MUL
+    MUL,
+    POW,
+    NEG,
+    SIN,
+    COS
 };
 
 enum TYPE{
     INT,
     OPERAT,
-    VARIEBL
+    VAR
 };
 
 enum DIRECTION{
@@ -56,6 +60,13 @@ enum DIRECTION{
 
 void CtorRootAndVariebles(Tree* tree, Variables* arrayVar);
 void TreeAndVarieblesDtor(Tree* tree, Variables* arrayVar);
+void ClearFile(const char* filename);
+
+Node* NewNode(int type, int value, Node* left, Node* right);
+void SetParentPointers(Node* node, Node* parent);
+Node* Copy(Node* nowNode);
+Node* Dif(Node* nowNode);
+void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif, Lines* text);
 
 Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 
@@ -67,30 +78,19 @@ char* GetWord(Buffer* array);
 //Node* BuildTreeFromBuffer(struct Buffer* array, int* index, Variables* arrayVar);
 void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar);
 
-char IssuesOperation(Node* node);
+char* IssuesOperation(Node* node);
 void GenerateImage(Tree* tree, Variables* arrayVar);
 void GenerateGraphImage();
 
 int EvaluateExpression(Node* node, Variables* arrayVar);
 
-void PrintTreeToFileWithoutBrackets(Node* node, Variables* arrayVar);
-void PrintNode(Node* node, FILE* file, Variables* arrayVar);
-void PrintIntNode(Node* node, FILE* file, Variables* arrayVar);
-void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar);
-void PrintParentNull(Node* node, FILE* file, Variables* arrayVar);
-
 int CheckingPriorityOperation(int operation);
-
-void PrintInFileInfForm(Node* node, Variables* arrayVar);
-void PrintNodeInfForm(Node* node, FILE* file, Variables* arrayVar);
 
 char* FromOperationToWord(int operation);
 
-void PrintTreeLaTex(Node* node, Variables* arrayVar);
-void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar);
-void PrintNodeTex(Node* node, FILE* file, Variables* arrayVar);
-void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar);
-void PrintIntNodeTex(Node* node, FILE* file, Variables* arrayVar);
+int GenerateRandomNumber(int min, int max);
+
+void CreateNewGraph();
 
 //VariableData* findOrCreateVariable(Variables* arrayVar, const char* name);
 
