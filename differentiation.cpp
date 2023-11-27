@@ -393,7 +393,12 @@ int EvaluateExpression(Node* node, Variables* arrayVar)
         case MUL:
             return leftValue * rightValue;
         case DIV:
-            return leftValue / rightValue;
+            if (rightValue == 0)
+            {
+                printf("делить на ноль нельзя\n");
+                return 1;
+            }
+            else return leftValue / rightValue;
         case SIN:
             return sin(leftValue);
         case COS:

@@ -1,1 +1,1 @@
-x sin / x cos + x ^ 2 + 1 
+x sin / x cos / x ^ 2 

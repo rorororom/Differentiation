@@ -20,6 +20,7 @@ int main()
 
     Lines text = {};
     Buffer phrasesText = {};
+    //Preamble();
     ProcessFile(&phrasesText, &text);
 
     GenerateImage(&tree, &array);
@@ -54,5 +55,6 @@ int main()
     result = EvaluateExpression(treeDif.rootTree, &array);
 
     TreeAndVarieblesDtor(&tree, &array);
+    //EndOfDocument();
     return 0;
 }

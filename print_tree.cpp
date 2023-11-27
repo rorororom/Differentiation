@@ -166,6 +166,7 @@ void PrintTreeLaTex(Node* node, Variables* arrayVar, Lines* text)
     int min_value = 0;
     int max_value = 4;
     int random_number = GenerateRandomNumber(min_value, max_value);
+
     fprintf(file, "$\\text{%s}$\n", text->text[random_number]);
 
     fprintf(file, "$$ ");
@@ -214,7 +215,14 @@ void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar)
     }
     else if (node->value == POW)
     {
-        PrintNodeTex(node->left, file, arrayVar);
+        if (node->left->left == NULL && node->left->right == NULL)
+            PrintNodeTex(node->left, file, arrayVar);
+        else
+        {
+            fprintf(file, "( ");
+            PrintNodeTex(node->left, file, arrayVar);
+            fprintf(file, ") ");
+        }
         char* operation = IssuesOperation(node);
         fprintf(file, "%s ", operation);
         fprintf(file, "{ ");
@@ -331,4 +339,63 @@ void PrintIntNodeTex(Node* node, FILE* file, Variables* arrayVar)
         fprintf(file, "%s ", nameVar);
     }
     PrintNodeTex(node->right, file, arrayVar);
+}
+
+void Preamble()
+{
+    FILE* file = fopen("./file/tex.md", "a");
+    if (file == NULL)
+    {
+        printf("Ошибка при открытии файла.\n");
+        return;
+    }
+
+    fprintf(file, "\\documentclass{article}\n");
+    fprintf(file, "\\usepackage[a4paper]{geometry}\n");
+    fprintf(file, "\\geometry{top=1.41cm, bottom=1.41cm, left=1.41cm, right=1.41cm, marginparwidth=1.75cm}\n");
+
+    fprintf(file, "\\usepackage[T2A]{fontenc}\n");
+    fprintf(file, "\\usepackage[utf8]{inputenc}\n");
+    fprintf(file, "\\usepackage[english, russian]{babel}\n");
+
+    fprintf(file, "\\usepackage{amsmath}\n");
+    fprintf(file, "\\usepackage{graphicx}\n");
+    fprintf(file, "\\usepackage[colorlinks=true, allcolors=blue]{hyperref}\n");
+    fprintf(file, "\\usepackage{amsfonts}\n");
+    fprintf(file, "\\usepackage{amssymb}\n");
+    fprintf(file, "\\usepackage{seqsplit}\n");
+    fprintf(file, "\\usepackage[dvipsnames]{xcolor}\n");
+    fprintf(file, "\\usepackage{enumitem}\n");
+    fprintf(file, "\\usepackage{algorithm}\n");
+    fprintf(file, "\\usepackage{algpseudocode}\n");
+    fprintf(file, "\\usepackage{algorithmicx}\n");
+    fprintf(file, "\\usepackage{mathalfa}\n");
+    fprintf(file, "\\usepackage{mathrsfs}\n");
+    fprintf(file, "\\usepackage{dsfont}\n");
+    fprintf(file, "\\usepackage{caption,subcaption}\n");
+    fprintf(file, "\\usepackage{wrapfig}\n");
+    fprintf(file, "\\usepackage[stable]{footmisc}\n");
+    fprintf(file, "\\usepackage{indentfirst}\n");
+    fprintf(file, "\\usepackage{rotating}\n");
+    fprintf(file, "\\usepackage{pdflscape}\n");
+
+    fprintf(file, "\\usepackage{MnSymbol,wasysym}\n");
+
+    fprintf(file, "\\begin{document}\n");
+
+    fclose(file);
+}
+
+void EndOfDocument()
+{
+    FILE* file = fopen("./file/tex.md", "a");
+    if (file == NULL)
+    {
+        printf("Ошибка при открытии файла.\n");
+        return;
+    }
+
+    fprintf(file, "\\end{document}\n");
+
+    fclose(file);
 }

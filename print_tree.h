@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include "differentiation.h"
 
+void Preamble();
+void EndOfDocument();
+
 void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar);
 void PrintNodeTex(Node* node, FILE* file, Variables* arrayVar);
 void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar);
