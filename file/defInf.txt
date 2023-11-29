@@ -1,1 +1,1 @@
-( ( ( ( nil x nil ) sin nil ) div ( ( nil x nil ) cos nil ) ) div ( ( nil x nil ) pow ( nil 2 nil ) ) ) 
+( ( ( ( ( nil 5.00 nil ) mul ( nil x nil ) ) tg nil ) add ( ( nil 300.00 nil ) mul ( nil x nil ) ) ) div ( ( nil x nil ) sin nil ) ) 

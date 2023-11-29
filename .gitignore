@@ -1,4 +1,6 @@
 /.DS_Store
 /.vscode
 /obj
-/.out
+/*.out
+/grapth
+/file

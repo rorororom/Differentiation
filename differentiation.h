@@ -9,10 +9,13 @@
 const int MAX_LEN = 256;
 const int MAX_VARIABLES = 10;
 const int capacity = 10;
+const int ZERO = 0;
+const double E_CONST = 2.71;
+const int ERROR_OP = -100;
 
 typedef struct Node {
     int type;
-    int value;
+    double value;
     Node* left;
     Node* right;
     Node* parent;
@@ -26,7 +29,7 @@ typedef struct Tree {
 
 typedef struct VariableData {
     char* name;
-    int value;
+    double value;
 } VariableData;
 
 typedef struct Variables {
@@ -35,22 +38,34 @@ typedef struct Variables {
     int size;
 } Variables;
 
+typedef struct Differ {
+    Tree* tree;
+    Variables* variables;
+} Differ;
+
 enum OPERATION{
     OperError = -1,
-    SUB,
+    SUB = 0,
     DIV,
     ADD,
     MUL,
     POW,
-    NEG,
-    SIN,
-    COS
+    SIN = 5,
+    COS,
+    TAN,
+    COT,
+    LN,
+    ARCSIN,
+    ARCCOS,
+    ARCTAN,
+    ARCCOT
 };
 
 enum TYPE{
     INT,
     OPERAT,
-    VAR
+    VAR,
+    CONST
 };
 
 enum DIRECTION{
@@ -58,11 +73,11 @@ enum DIRECTION{
     RIGHT
 };
 
-void CtorRootAndVariebles(Tree* tree, Variables* arrayVar);
-void TreeAndVarieblesDtor(Tree* tree, Variables* arrayVar);
+void CtorRootAndVariebles(Differ* differ);
+void TreeAndVarieblesDtor(Differ* differ);
 void ClearFile(const char* filename);
 
-Node* NewNode(int type, int value, Node* left, Node* right);
+Node* NewNode(int type, double value, Node* left, Node* right);
 void SetParentPointers(Node* node, Node* parent);
 Node* Copy(Node* nowNode);
 Node* Dif(Node* nowNode);
@@ -70,7 +85,7 @@ void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, T
 
 Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 
-void BuildTreeFromFile(const char* filename, Tree* tree, Variables* arrayVar);
+void BuildTreeFromFile(const char* filename, Differ* differ);
 
 //Node* ReadFromBuffer(Buffer* array, Node* currentNode);
 char* GetWord(Buffer* array);
@@ -79,10 +94,10 @@ char* GetWord(Buffer* array);
 void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar);
 
 char* IssuesOperation(Node* node);
-void GenerateImage(Tree* tree, Variables* arrayVar);
+void GenerateImage(Differ* differ);
 void GenerateGraphImage();
 
-int EvaluateExpression(Node* node, Variables* arrayVar);
+double EvaluateExpression(Node* node, Variables* arrayVar);
 
 int CheckingPriorityOperation(int operation);
 

@@ -1,1 +1,1 @@
-x sin / x cos / x ^ 2 
+( ( 5.00 * x ) tg + 300.00 * x ) / x sin 

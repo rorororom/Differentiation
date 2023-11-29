@@ -25,38 +25,26 @@ void PrintTreeToFileWithoutBrackets(Node* node, Variables* arrayVar)
 
 void PrintNode(Node* node, FILE* file, Variables* arrayVar)
 {
-    if (node == NULL)
-    {
-        return;
-    }
+    if (node == NULL) return;
     if (node->type == INT || node->type == VAR)
-    {
         PrintIntNode(node, file, arrayVar);
-    }
-    else
-    {
+    else {
         if (node->parent != NULL)
-        {
             PrintParentNorNull(node, file, arrayVar);
-        }
         else
-        {
             PrintParentNull(node, file, arrayVar);
-        }
     }
 }
 
 void PrintIntNode(Node* node, FILE* file, Variables* arrayVar)
 {
     PrintNode(node->left, file, arrayVar);
-    if (node->type ==VAR)
-    {
-        char* nameValue = strdup(arrayVar->data[node->value].name);
+    if (node->type ==VAR) {
+        char* nameValue = strdup(arrayVar->data[int(node->value)].name);
         fprintf(file, "%s ", nameValue);
     }
-    else
-    {
-        fprintf(file, "%d ", node->value);
+    else {
+        fprintf(file, "%.2lf ", node->value);
     }
     PrintNode(node->right, file, arrayVar);
 }
@@ -64,17 +52,16 @@ void PrintIntNode(Node* node, FILE* file, Variables* arrayVar)
 void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar)
 {
     int operationParent = CheckingPriorityOperation(node->parent->value);
+    if (operationParent == ERROR_OP) printf("error operation\n");
     int operationNowNode = CheckingPriorityOperation(node->value);
+    if (operationNowNode == ERROR_OP) printf("error operation\n");
 
-    if (operationParent > operationNowNode ||
-        ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode) && (node->value == DIV)))
-    {
+    if (operationParent > operationNowNode   || ((node->parent->flagDirection == RIGHT) &&
+       (operationParent == operationNowNode) && (node->value == DIV)))
         fprintf(file, "( ");
-    }
-    else if ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode) && (node->value == SUB))
-    {
+    else if ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode)  &&
+             (node->value == SUB))
         node->value = ADD;
-    }
 
     node->flagDirection = LEFT;
     PrintNode(node->left, file, arrayVar);
@@ -85,8 +72,8 @@ void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar)
     node->flagDirection = RIGHT;
     PrintNode(node->right, file, arrayVar);
 
-    if (operationParent> operationNowNode ||
-        ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode) && (node->value == DIV)))
+    if (operationParent> operationNowNode || ((node->parent->flagDirection == RIGHT) &&
+       (operationParent == operationNowNode) && (node->value == DIV)))
     {
         fprintf(file, ") ");
     }
@@ -123,8 +110,7 @@ void PrintNodeInfForm(Node* node, FILE* file, Variables* arrayVar)
 {
     assert(file);
 
-    if (node == NULL)
-    {
+    if (node == NULL) {
         fprintf(file, "nil ");
         return;
     }
@@ -133,17 +119,15 @@ void PrintNodeInfForm(Node* node, FILE* file, Variables* arrayVar)
 
     PrintNodeInfForm(node->left, file, arrayVar);
 
-    if (node->type == INT)
-    {
-        fprintf(file, "%d ", node->value);
+    if (node->type == INT || node->type == CONST) {
+        if (node->value == E_CONST) fprintf(file, "e ");
+        else fprintf(file, "%.2lf ", node->value);
     }
-    else if (node->type ==VAR)
-    {
-        char* operation = strdup(arrayVar->data[node->value].name);
+    else if (node->type ==VAR) {
+        char* operation = strdup(arrayVar->data[int(node->value)].name);
         fprintf(file, "%s ", operation);
     }
-    else
-    {
+    else {
         char* operation = FromOperationToWord(node->value);
         fprintf(file, "%s ", operation);
     }
@@ -152,9 +136,10 @@ void PrintNodeInfForm(Node* node, FILE* file, Variables* arrayVar)
     fprintf(file, ") ");
 }
 
-void PrintTreeLaTex(Node* node, Variables* arrayVar, Lines* text)
+void PrintTreeLaTex(const char* expression, Node* node, Variables* arrayVar, Lines* text)
 {
     assert(node);
+    assert(arrayVar);
 
     FILE* file = fopen("./file/tex.md", "a");
     if (file == NULL)
@@ -164,61 +149,66 @@ void PrintTreeLaTex(Node* node, Variables* arrayVar, Lines* text)
     }
 
     int min_value = 0;
-    int max_value = 4;
+    int max_value = text->line_count - 1;
     int random_number = GenerateRandomNumber(min_value, max_value);
 
     fprintf(file, "$\\text{%s}$\n", text->text[random_number]);
 
-    fprintf(file, "$$ ");
+    fprintf(file, "$$%s = ", expression);
     PrintNodeTex(node, file, arrayVar);
     fprintf(file, "$$\n");
 
     fclose(file);
 }
 
-
-void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar)
+static void PrintDivisionTexNoPar(Node* node, FILE* file, Variables* arrayVar)
 {
-    int operationParent = 0;
-    if (node->parent != NULL)
-    {
-        operationParent = CheckingPriorityOperation(node->parent->value) ;
-    }
-    //int operationParent = (node->parent != NULL) ? CheckingPriorityOperation(node->parent->value) ;
+    fprintf(file, "\\frac ");
 
-    int operationNowNode = CheckingPriorityOperation(node->value);
+    fprintf(file, "{ ");
+    PrintNodeTex(node->left, file, arrayVar);
+    fprintf(file, "} ");
 
-    if ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode) && (node->value == SUB))
-    {
-        node->value = ADD;
-    }
+    fprintf(file, "{ ");
+    PrintNodeTex(node->right, file, arrayVar);
+    fprintf(file, "} ");
+}
 
-    if (node->value == DIV)
-    {
-        fprintf(file, "\\frac ");
+static void PrintDivisionTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    fprintf(file, "\\frac ");
 
-        fprintf(file, "{ ");
+    fprintf(file, "{ ");
+    node->flagDirection = LEFT;
+    PrintNodeTex(node->left, file, arrayVar);
+    fprintf(file, "} ");
+
+    fprintf(file, "{ ");
+    node->flagDirection = RIGHT;
+    PrintNodeTex(node->right, file, arrayVar);
+    fprintf(file, "} ");
+}
+
+static void PrintSpecialOperationTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    char* operation = IssuesOperation(node);
+    fprintf(file, "%s( ", operation);
+
+    PrintNodeTex(node->left, file, arrayVar);
+    fprintf(file, ") ");
+}
+
+static void PrintPowerOpTexNoPar(Node* node, FILE* file, Variables* arrayVar)
+{
+    if (node->right->type == INT && node->right->value == 0.5) {
+        fprintf(file, "\\sqrt{ ");
         PrintNodeTex(node->left, file, arrayVar);
         fprintf(file, "} ");
-
-        fprintf(file, "{ ");
-        PrintNodeTex(node->right, file, arrayVar);
-        fprintf(file, "} ");
     }
-    else if (node->value == SIN || node->value == COS)
-    {
-        char* operation = IssuesOperation(node);
-        fprintf(file, "%s( ", operation);
-
-        PrintNodeTex(node->left, file, arrayVar);
-        fprintf(file, ") ");
-    }
-    else if (node->value == POW)
-    {
+    else {
         if (node->left->left == NULL && node->left->right == NULL)
             PrintNodeTex(node->left, file, arrayVar);
-        else
-        {
+        else {
             fprintf(file, "( ");
             PrintNodeTex(node->left, file, arrayVar);
             fprintf(file, ") ");
@@ -229,126 +219,154 @@ void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar)
         PrintNodeTex(node->right, file, arrayVar);
         fprintf(file, "} ");
     }
-    else
-    {
-        node->flagDirection = LEFT;
-        PrintNodeTex(node->left, file, arrayVar);
+}
 
-        if (node->value == MUL)
-        {
-            fprintf(file, "\\cdot ");
-        }
-        else
-        {
-            char* operation = IssuesOperation(node);
-            fprintf(file, "%s ", operation);
-        }
+static void PrintPowerOpTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    char* operation = IssuesOperation(node);
+    fprintf(file, "%s ", operation);
+    fprintf(file, "{ ");
+    PrintNodeTex(node->right, file, arrayVar);
+    fprintf(file, "} ");
+}
 
-        node->flagDirection = RIGHT;
-        PrintNodeTex(node->right, file, arrayVar);
+static void PrintMultiplicationWithAddSubLeft(Node* node, FILE* file, Variables* arrayVar)
+{
+    fprintf(file, "( ");
+    PrintNodeTex(node->left, file, arrayVar);
+    fprintf(file, ") ");
+    fprintf(file, "* ");
+    PrintNodeTex(node->right, file, arrayVar);
+}
+
+static void PrintMultiplicationWithAddSubRight(Node* node, FILE* file, Variables* arrayVar)
+{
+    fprintf(file, "( ");
+    PrintNodeTex(node->right, file, arrayVar);
+    fprintf(file, ") ");
+    fprintf(file, "* ");
+    PrintNodeTex(node->right, file, arrayVar);
+}
+
+static void ProcessDefaultOperationTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    node->flagDirection = LEFT;
+    PrintNodeTex(node->left, file, arrayVar);
+
+    if (node->value == MUL) {
+        fprintf(file, "\\cdot ");
+    }
+    else {
+        char* operation = IssuesOperation(node);
+        fprintf(file, "%s ", operation);
+    }
+
+    node->flagDirection = RIGHT;
+    PrintNodeTex(node->right, file, arrayVar);
+}
+
+void PrintParentNorNullTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    int operationParent = 0;
+    if (node->parent != NULL) {
+        operationParent = CheckingPriorityOperation(node->parent->value) ;
+        if (operationParent == ERROR_OP) printf("error operation\n");
+    }
+
+    int operationNowNode = CheckingPriorityOperation(node->value);
+    if (operationNowNode == ERROR_OP) printf("error operation\n");
+
+    if ((node->parent->flagDirection == RIGHT) &&
+        (operationParent == operationNowNode) && (node->value == SUB)) {
+        node->value = ADD;
+    }
+
+    if (node->value == DIV) {
+        PrintDivisionTexNoPar(node, file, arrayVar);
+    }
+    else if (5 <= node->value && node->value <= 13) {
+        PrintSpecialOperationTex(node, file, arrayVar);
+    }
+    else if (node->value == POW) {
+        PrintPowerOpTexNoPar(node, file, arrayVar);
+    }
+
+    else if (node->value       == MUL  && (((node->left->value == ADD ||
+             node->left->value == SUB) &&    node->left->type  == OPERAT))) {
+        PrintMultiplicationWithAddSubLeft(node, file, arrayVar);
+    }
+    else if (node->value        == MUL  && (((node->right->value == ADD ||
+             node->right->value == SUB) &&    node->right->type  == OPERAT))) {
+        PrintMultiplicationWithAddSubRight(node, file, arrayVar);
+    }
+    else {
+        ProcessDefaultOperationTex(node, file, arrayVar);
     }
 }
 
 void PrintNodeTex(Node* node, FILE* file, Variables* arrayVar)
 {
-    if (node == NULL)
-    {
+    if (node == NULL) {
         return;
     }
-    if (node->type == INT || node->type ==VAR)
-    {
+    if (node->type == INT || node->type == VAR || node->type == CONST) {
         PrintIntNodeTex(node, file, arrayVar);
     }
-    else
-    {
-        if (node->parent != NULL)
-        {
+    else {
+        if (node->parent != NULL) {
             PrintParentNorNullTex(node, file, arrayVar);
         }
-        else
-        {
+        else {
             PrintParentNullTex(node, file, arrayVar);
         }
     }
 }
 
-void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar)
-{
-    if (node->value == DIV)
-    {
-        fprintf(file, "\\frac ");
-
-        fprintf(file, "{ ");
-        node->flagDirection = LEFT;
-        PrintNodeTex(node->left, file, arrayVar);
-        fprintf(file, "} ");
-
-        fprintf(file, "{ ");
-        node->flagDirection = RIGHT;
-        PrintNodeTex(node->right, file, arrayVar);
-        fprintf(file, "} ");
-    }
-    else if (node->value == POW)
-    {
-        PrintNodeTex(node->left, file, arrayVar);
-        char* operation = IssuesOperation(node);
-        fprintf(file, "%s( ", operation);
-        fprintf(file, "{ ");
-        PrintNodeTex(node->right, file, arrayVar);
-        fprintf(file, "} ");
-    }
-    else if (node->value == SIN || node->value == COS)
-    {
-        char* operation = IssuesOperation(node);
-        fprintf(file, "%s ", operation);
-
-        PrintNodeTex(node->left, file, arrayVar);
-        fprintf(file, ") ");
-    }
-    else
-    {
-        node->flagDirection = LEFT;
-        PrintNodeTex(node->left, file, arrayVar);
-
-        if (node->value == MUL)
-        {
-            fprintf(file, "\\cdot ");
-        }
-        else
-        {
-            char* operation = IssuesOperation(node);
-            fprintf(file, "%s ", operation);
-        }
-
-        node->flagDirection = RIGHT;
-        PrintNodeTex(node->right, file, arrayVar);
-    }
-}
-
-
 void PrintIntNodeTex(Node* node, FILE* file, Variables* arrayVar)
 {
     PrintNodeTex(node->left, file, arrayVar);
-    if (node->type == INT)
-    {
-        fprintf(file, "%d ", node->value);
+    if (node->type == CONST) {
+        fprintf(file, "e ");
     }
-    else if (node->type ==VAR)
-    {
-        char* nameVar = strdup(arrayVar->data[node->value].name);
+    else if (node->type == INT) {
+        fprintf(file, "%.2lf ", node->value);
+    }
+    else if (node->type ==VAR) {
+        char* nameVar = strdup(arrayVar->data[int(node->value)].name);
         fprintf(file, "%s ", nameVar);
     }
     PrintNodeTex(node->right, file, arrayVar);
 }
 
+void PrintParentNullTex(Node* node, FILE* file, Variables* arrayVar)
+{
+    if (node->value == DIV) {
+        PrintDivisionTex(node, file, arrayVar);
+    }
+    else if (node->value == POW) {
+        PrintPowerOpTex(node, file, arrayVar);
+    }
+    else if (SIN <= node->value && node->value <= ARCCOT) {
+        PrintSpecialOperationTex(node, file, arrayVar);
+    }
+    else {
+        ProcessDefaultOperationTex(node, file, arrayVar);
+    }
+}
+
 void Preamble()
 {
     FILE* file = fopen("./file/tex.md", "a");
-    if (file == NULL)
-    {
+    if (file == NULL) {
         printf("Ошибка при открытии файла.\n");
         return;
     }
+
+//     fprintf(file, R"(
+// documentclass{article}
+// usepackage[a4paper]{geometry}
+// geometry{top=1.41cm, bottom=1.41cm, left=1.41cm, right=1.41cm, marginparwidth=1.75cm}
+// )");
 
     fprintf(file, "\\documentclass{article}\n");
     fprintf(file, "\\usepackage[a4paper]{geometry}\n");
@@ -389,13 +407,40 @@ void Preamble()
 void EndOfDocument()
 {
     FILE* file = fopen("./file/tex.md", "a");
-    if (file == NULL)
-    {
+    if (file == NULL) {
         printf("Ошибка при открытии файла.\n");
         return;
     }
 
     fprintf(file, "\\end{document}\n");
+    fclose(file);
+}
+
+void PrintStartProekt()
+{
+    FILE* file = fopen("./file/tex.md", "a");
+    if (file == NULL) {
+        printf("Ошибка при открытии файла.\n");
+        return;
+    }
+
+    fprintf(file, "Дифференцировать или не дифференцировать? Вот в чем вопрос.\n");
+    fprintf(file, "\n");
+    fprintf(file, "Ромашкина Мария\n");
+    fprintf(file, "\n");
+
+    fprintf(file, "Мы считаем, что в мире, полном перемен и неожиданностей, умение различать,\
+                   анализировать и выделять ключевые моменты – настоящее искусство.\
+                   Дифференцирование - это как надежная карта в лабиринте жизни,\
+                   которая помогает нам ориентироваться в бурной реальности.\
+                   Представьте себе: вы стоите на вершине горы, а ваши знания\
+                   в дифференциальных уравнениях – это крылья, позволяющие вам свободно парить\
+                   в воздухе перемен. Это не просто математика, это способность видеть красоту\
+                   в структурах и взаимосвязях. И если вас когда-то спросят, дифференцировать\
+                   или не дифференцировать, вы точно будете знать ответ –\
+                   давайте раскрывать потенциал и выделять главные моменты в этом захватывающем\
+                   путешествии под названием \"Жизнь.\"\n" );
+    fprintf(file, "\n");
 
     fclose(file);
 }
