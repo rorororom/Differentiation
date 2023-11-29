@@ -12,6 +12,8 @@
 #include "log_funcs.h"
 #include "print_tree.h"
 
+int indexInBufer = 0;
+
 #define _ADD(left, right) NewNode(OPERAT, ADD, left, right)
 #define _MUL(left, right) NewNode(OPERAT, MUL, left, right)
 #define _SUB(left, right) NewNode(OPERAT, SUB, left, right)
@@ -102,6 +104,7 @@ void BuildTreeFromFile(const char* filename, Differ* differ)
 
     CREAT_NODE(newNode);
     newNode = ReadFromBufferInf(&array, NULL, differ->variables);
+    indexInBufer = 0;
     differ->tree->rootTree = newNode;
 
     if (differ->tree->rootTree == NULL)
@@ -292,8 +295,6 @@ void GenerateGraphImage()
     system(command);
 }
 
-int indexInBufer = 0;
-
 #define SET_OPERATOR(op, OP, ...) case OP: return op;
 
 char* FromOperationToWord(int operation)
@@ -441,7 +442,7 @@ static void ReplaceNodeWithAnswer(Node** nowNode, int* changeCount,
     *nowNode = newNode;
     (*changeCount)++;
     CreateNewGraph();
-    PrintTreeLaTex("f'(x)", treeDif->rootTree, arrayVar, text);
+    PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
 
 static void ReplaceNodeWithZero(Node** nowNode, int* changeCount,
@@ -451,7 +452,7 @@ static void ReplaceNodeWithZero(Node** nowNode, int* changeCount,
     newNode->parent = (*nowNode)->parent;
     *nowNode = newNode;
     (*changeCount)++;
-    PrintTreeLaTex("f'(x)", treeDif->rootTree, arrayVar, text);
+    PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
 
 static void ReplaceNodeWithOne(Node** nowNode, int* changeCount,
@@ -461,7 +462,7 @@ static void ReplaceNodeWithOne(Node** nowNode, int* changeCount,
     newNode->parent = (*nowNode)->parent;
     *nowNode = newNode;
     (*changeCount)++;
-    PrintTreeLaTex("f'(x)", treeDif->rootTree, arrayVar, text);
+    PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
 
 static void ReplaceNodeWithRightChild(Node** nowNode, int* changeCount,
@@ -470,7 +471,7 @@ static void ReplaceNodeWithRightChild(Node** nowNode, int* changeCount,
     (*nowNode)->right->parent = (*nowNode)->parent;
     *nowNode = (*nowNode)->right;
     (*changeCount)++;
-    PrintTreeLaTex("f'(x)", treeDif->rootTree, arrayVar, text);
+    PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
 
 static void ReplaceNodeWithLeftChild(Node** nowNode, int* changeCount,
@@ -479,7 +480,7 @@ static void ReplaceNodeWithLeftChild(Node** nowNode, int* changeCount,
     (*nowNode)->left->parent = (*nowNode)->parent;
     *nowNode = (*nowNode)->left;
     (*changeCount)++;
-    PrintTreeLaTex("f'(x)", treeDif->rootTree, arrayVar, text);
+    PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
 
 static void ProcessRightNull(Node** nowNode, int* changeCount,
@@ -599,13 +600,10 @@ void ClearFile(const char* filename)
 
 int GenerateRandomNumber(int min, int max)
 {
-    srand(time(NULL));
-
     int randomNumber = rand() % (max - min + 1) + min;
+    printf("rand = %d\n", randomNumber);
 
     return randomNumber;
-
-    return rand();
 }
 
 // Node* ReadFromBuffer(Buffer* array, Node* currentNode)
@@ -629,3 +627,66 @@ int GenerateRandomNumber(int min, int max)
 //
 //     return NULL;
 // }
+
+#define DifOper(OP, op)                         \
+    differ.tree->rootTree->value = OP;          \
+    node1 = Dif(differ.tree->rootTree);         \
+    SetParentPointers(node1, NULL);             \
+    PrintFunc(op, node1, differ.variables, file);
+
+void DifferOperat(Lines* text)
+{
+    FILE* file = fopen("./file/tex.md", "a");
+    if (file == NULL)
+    {
+        printf("Ошибка при открытии файла.\n");
+        return;
+    }
+    fprintf(file, "Если тебя спросят, почему ты такой усталый:\
+                   Дифференцирование не берет отпуск. Оно просто идет в бесконечность.\n");
+    fprintf(file, "Таблица производных, которой мы будем пользоваться:\n");
+
+    Differ differ = {};
+    Tree tree = {};
+    Variables array = {};
+    differ.tree = &tree;
+    differ.variables = &array;
+    CtorRootAndVariebles(&differ);
+    differ.variables->data[0].name = "x";
+    differ.variables->data[0].value = 0;
+    differ.variables->size++;
+
+    CREAT_NODE(node);
+    InitializeNode(node, OPERAT, SIN, NULL, NULL, NULL);
+    CREAT_NODE(leftNode);
+    InitializeNode(leftNode, VAR, 0, NULL, NULL, NULL);
+    differ.tree->rootTree = node;
+
+    leftNode->parent = differ.tree->rootTree;
+    differ.tree->rootTree->left = leftNode;
+
+    Node* node1 = Dif(differ.tree->rootTree);
+    SetParentPointers(node1, NULL);
+    PrintFunc("sin(x)' = ", node1, differ.variables, file);
+
+    DifOper(COS,    "cos(x)' = ");
+    DifOper(TAN,    "tg(x)' = ");
+    DifOper(COT,    "cot(x)' = ");
+    DifOper(ARCSIN, "arcsin(x)' = ");
+    DifOper(ARCCOS, "arccos(x)' = ");
+    DifOper(ARCTAN, "arctg(x)' = ");
+    DifOper(ARCCOT, "arccot(x)' = ");
+    DifOper(LN,     "ln(x)' = ");
+
+    fclose(file);
+}
+
+void PrintFunc(const char* expression, Node* node, Variables* arrayVar, FILE* file)
+{
+    assert(node);
+    assert(arrayVar);
+
+    fprintf(file, "$$%s ", expression);
+    PrintNodeTex(node, file, arrayVar);
+    fprintf(file, "$$\n");;
+}

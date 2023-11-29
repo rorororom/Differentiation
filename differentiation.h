@@ -76,6 +76,8 @@ enum DIRECTION{
 void CtorRootAndVariebles(Differ* differ);
 void TreeAndVarieblesDtor(Differ* differ);
 void ClearFile(const char* filename);
+void DifferOperat(Lines* text);
+void PrintFunc(const char* expression, Node* node, Variables* arrayVar, FILE* file);
 
 Node* NewNode(int type, double value, Node* left, Node* right);
 void SetParentPointers(Node* node, Node* parent);

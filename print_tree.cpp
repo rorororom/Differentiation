@@ -154,7 +154,7 @@ void PrintTreeLaTex(const char* expression, Node* node, Variables* arrayVar, Lin
 
     fprintf(file, "$\\text{%s}$\n", text->text[random_number]);
 
-    fprintf(file, "$$%s = ", expression);
+    fprintf(file, "$$%s ", expression);
     PrintNodeTex(node, file, arrayVar);
     fprintf(file, "$$\n");
 
@@ -439,7 +439,11 @@ void PrintStartProekt()
                    в структурах и взаимосвязях. И если вас когда-то спросят, дифференцировать\
                    или не дифференцировать, вы точно будете знать ответ –\
                    давайте раскрывать потенциал и выделять главные моменты в этом захватывающем\
-                   путешествии под названием \"Жизнь.\"\n" );
+                   путешествии под названием Жизнь.\n" );
+    fprintf(file, "\n");
+    fprintf(file, "А вообще, пока вы молоды...\
+                   Тусуйтесь на нк и кайфуйте, потому что молодость никто не вернет,\
+                   а вот как брать производные, ты всегда сможешь загуглить)\n");
     fprintf(file, "\n");
 
     fclose(file);
