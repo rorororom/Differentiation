@@ -26,6 +26,19 @@ int indexInBufer = 0;
 #define COPYR Copy(nowNode->right)
 #define DIFL  Dif(nowNode->left)
 #define DIFR  Dif(nowNode->right)
+#define NLT nowNode->left->type
+#define NOWL (*nowNode)->left
+#define NOWLT (*nowNode)->left->type
+#define NOWLT (*nowNode)->left->type
+#define NOWLV (*nowNode)->left->value
+#define NOWLV (*nowNode)->left->value
+#define NOWR (*nowNode)->right
+#define NOWRT (*nowNode)->right->type
+#define NOWRT (*nowNode)->right->type
+#define NOWRV (*nowNode)->right->value
+#define NOWRV (*nowNode)->right->value
+#define NOWV (*nowNode)->value
+#define NODE_INT(value) NewNode(INT, value, NULL, NULL)
 
 static void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent);
 static void PrintNodeDump(FILE* dotFile, Node* node, Variables* arrayVar, const char* fillColor);
@@ -325,6 +338,22 @@ char* GetWord(Buffer* array)
     return token;
 }
 
+static int FastPower(int baseValue, int exponent)
+{
+    int result = 1;
+
+    while (exponent > 0) {
+        if (exponent % 2 == 1) {
+            result *= baseValue;
+            exponent--;
+        }
+
+        baseValue *= baseValue;
+        exponent /= 2;
+    }
+    return result;
+}
+
 #define RAD_TO_DEG(angle) ((angle) * 180.0 / M_PI)
 #define SET_OPERATOR(op, OP, simbol, evaluate, ...) case OP: evaluate
 
@@ -399,8 +428,6 @@ Node* Dif(Node* nowNode)
     if (nowNode->type == VAR)
         return NewNode(INT, 1, NULL, NULL);
 
-    Node* leftDiff  = nowNode->left  ? Dif(nowNode->left)  : NULL;
-    Node* rightDiff = nowNode->right ? Dif(nowNode->right) : NULL;
     switch(int(nowNode->value))
     {
         #include "operation.dsl"
@@ -468,8 +495,8 @@ static void ReplaceNodeWithOne(Node** nowNode, int* changeCount,
 static void ReplaceNodeWithRightChild(Node** nowNode, int* changeCount,
                                       Variables* arrayVar, Tree* treeDif, Lines* text)
 {
-    (*nowNode)->right->parent = (*nowNode)->parent;
-    *nowNode = (*nowNode)->right;
+    NOWR->parent = (*nowNode)->parent;
+    *nowNode = NOWR;
     (*changeCount)++;
     PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
@@ -477,8 +504,8 @@ static void ReplaceNodeWithRightChild(Node** nowNode, int* changeCount,
 static void ReplaceNodeWithLeftChild(Node** nowNode, int* changeCount,
                                      Variables* arrayVar, Tree* treeDif, Lines* text)
 {
-    (*nowNode)->left->parent = (*nowNode)->parent;
-    *nowNode = (*nowNode)->left;
+    NOWL->parent = (*nowNode)->parent;
+    *nowNode = NOWL;
     (*changeCount)++;
     PrintTreeLaTex("f'(x) = ", treeDif->rootTree, arrayVar, text);
 }
@@ -486,12 +513,10 @@ static void ReplaceNodeWithLeftChild(Node** nowNode, int* changeCount,
 static void ProcessRightNull(Node** nowNode, int* changeCount,
                              Variables* arrayVar, Tree* treeDif, Lines* text)
 {
-    if ((*nowNode)->left->value == 0 &&
-        (*nowNode)->left->type  == INT &&
-        (*nowNode)->value       == MUL)
+    if (NOWLV == 0 && NOWLT == INT && NOWV == MUL)
         ReplaceNodeWithZero(nowNode, changeCount, arrayVar, treeDif, text);
-    else if (int((*nowNode)->value)     == LN &&
-                 (*nowNode)->left->type == CONST)
+
+    else if (int(NOWV) == LN && NOWLT == CONST)
         ReplaceNodeWithOne(nowNode, changeCount, arrayVar, treeDif, text);
 
 }
@@ -506,18 +531,15 @@ static void ProcessIntNodes(Node** nowNode, int* changeCount,
 static void ProcessLeftOrRightInt(Node** nowNode, int* changeCount,
                                   Variables* arrayVar, Tree* treeDif, Lines* text)
 {
-    if (((*nowNode)->left->value == 1  &&
-         (*nowNode)->left->type == INT &&
-        ((*nowNode)->value == MUL      || (*nowNode)->value == POW)) ||
-        ((*nowNode)->left->value == 0  && ((*nowNode)->value == ADD  ||
-        (*nowNode)->value == SUB)))
+    if ((NOWLV == 1  && NOWLT  == INT && (NOWV == MUL|| NOWV == POW)) ||
+        (NOWLV == 0  && (NOWV  == ADD  || NOWV == SUB)))
         ReplaceNodeWithRightChild(nowNode, changeCount, arrayVar, treeDif, text);
-    else if ((*nowNode)->right->value == 1 &&
-             (*nowNode)->right->type  == INT && ((*nowNode)->value        == MUL ||
-             (*nowNode)->value == POW)       || ((*nowNode)->right->value == 0 &&
-             ((*nowNode)->value == ADD       || (*nowNode)->value         == SUB)))
+
+    else if (NOWRV == 1 && NOWRT == INT && (NOWV == MUL || NOWV == POW) ||
+            (NOWRV == 0 && (NOWV == ADD || NOWV == SUB)))
         ReplaceNodeWithLeftChild(nowNode, changeCount, arrayVar, treeDif, text);
-    else if (((((*nowNode)->right->value == 0 && (*nowNode)->right->type == INT) || (*nowNode)->left->value == 0 && (*nowNode)->left->type == INT)) && (*nowNode)->value == MUL)
+
+    else if ((((NOWRV == 0 && NOWRT == INT) || NOWLV == 0  && NOWLT == INT)) && NOWV == MUL)
     {
         ReplaceNodeWithZero(nowNode, changeCount, arrayVar, treeDif, text);
     }
@@ -526,38 +548,38 @@ static void ProcessLeftOrRightInt(Node** nowNode, int* changeCount,
 static void ProcessPowAndLeftPow(Node** nowNode, int* changeCount,
                                  Variables* arrayVar, Tree* treeDif, Lines* text)
 {
-    int num1 = (*nowNode)->right->value;
-    int num2 = (*nowNode)->left->right->value;
+    int num1 = NOWR->value;
+    int num2 = NOWL->right->value;
     int answer = num1 * num2;
     ReplaceNodeWithAnswer(nowNode, changeCount, arrayVar, treeDif, text, answer);
 }
 
 void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif, Lines* text)
 {
+    PrintInFileInfForm(treeDif->rootTree, arrayVar);
+
     if (*nowNode == NULL) return;
 
     if ((*nowNode)->type == OPERAT){
-        if ((*nowNode)->right == NULL) {
+        if (NOWR == NULL) {
             ProcessRightNull(nowNode, changeCount, arrayVar, treeDif, text);
+            PrintInFileInfForm(treeDif->rootTree, arrayVar);
             return;
         }
-
-        if ((*nowNode)->left && (*nowNode)->right &&
-           ((*nowNode)->left->type  == INT &&
-            (*nowNode)->right->type == INT))
+        if (NOWL && NOWR && (NOWLT == INT && NOWRT == INT))
             ProcessIntNodes(nowNode, changeCount, arrayVar, treeDif, text);
-        if ((*nowNode)->left && (*nowNode)->right &&
-           ((*nowNode)->left->type  == INT ||
-            (*nowNode)->right->type == INT))
-            ProcessLeftOrRightInt(nowNode, changeCount, arrayVar, treeDif, text);
-        if ((*nowNode)->value       == POW &&
-            (*nowNode)->left->value == POW &&
-            (*nowNode)->left->type  == OPERAT)
-            ProcessPowAndLeftPow(nowNode, changeCount, arrayVar, treeDif, text);
-    }
+            PrintInFileInfForm(treeDif->rootTree, arrayVar);
 
-    TransformationNode(&(*nowNode)->left, changeCount, arrayVar, treeDif, text);
-    TransformationNode(&(*nowNode)->right, changeCount, arrayVar, treeDif, text);
+        if (NOWL && NOWR && (NOWLT == INT || NOWRT == INT))
+            ProcessLeftOrRightInt(nowNode, changeCount, arrayVar, treeDif, text);
+            PrintInFileInfForm(treeDif->rootTree, arrayVar);
+
+        if (NOWV == POW && NOWLV == POW && NOWLT  == OPERAT)
+            ProcessPowAndLeftPow(nowNode, changeCount, arrayVar, treeDif, text);
+            PrintInFileInfForm(treeDif->rootTree, arrayVar);
+    }
+    TransformationNode(&NOWL, changeCount, arrayVar, treeDif, text);
+    TransformationNode(&NOWR, changeCount, arrayVar, treeDif, text);
 }
 
 static int imageCounter = 0;
@@ -601,7 +623,6 @@ void ClearFile(const char* filename)
 int GenerateRandomNumber(int min, int max)
 {
     int randomNumber = rand() % (max - min + 1) + min;
-    printf("rand = %d\n", randomNumber);
 
     return randomNumber;
 }

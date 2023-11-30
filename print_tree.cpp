@@ -95,7 +95,7 @@ void PrintInFileInfForm(Node* node, Variables* arrayVar)
 {
     assert(node);
 
-    FILE* file = fopen("./file/defInf.txt", "w");
+    FILE* file = fopen("./file/answer.txt", "a");
     if (file == NULL)
     {
         printf("Ошибка при открытии файла.\n");
@@ -103,6 +103,7 @@ void PrintInFileInfForm(Node* node, Variables* arrayVar)
     }
 
     PrintNodeInfForm(node, file, arrayVar);
+    fprintf(file, "\n");
     fclose(file);
 }
 
@@ -223,6 +224,7 @@ static void PrintPowerOpTexNoPar(Node* node, FILE* file, Variables* arrayVar)
 
 static void PrintPowerOpTex(Node* node, FILE* file, Variables* arrayVar)
 {
+    PrintNodeTex(node->left, file, arrayVar);
     char* operation = IssuesOperation(node);
     fprintf(file, "%s ", operation);
     fprintf(file, "{ ");
@@ -329,7 +331,7 @@ void PrintIntNodeTex(Node* node, FILE* file, Variables* arrayVar)
         fprintf(file, "e ");
     }
     else if (node->type == INT) {
-        fprintf(file, "%.2lf ", node->value);
+        fprintf(file, "%lg ", node->value);
     }
     else if (node->type ==VAR) {
         char* nameVar = strdup(arrayVar->data[int(node->value)].name);
@@ -442,7 +444,7 @@ void PrintStartProekt()
                    путешествии под названием Жизнь.\n" );
     fprintf(file, "\n");
     fprintf(file, "А вообще, пока вы молоды...\
-                   Тусуйтесь на нк и кайфуйте, потому что молодость никто не вернет,\
+                   Тусуйтесь на НК и кайфуйте, потому что молодость никто не вернет,\
                    а вот как брать производные, ты всегда сможешь загуглить)\n");
     fprintf(file, "\n");
 

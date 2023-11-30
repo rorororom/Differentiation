@@ -7,6 +7,19 @@
 #include "log_funcs.h"
 #include "print_tree.h"
 
+void TransformAndEvaluate(Differ* differ, Lines* text)
+{
+    int changeCount = 0;
+    do {
+        changeCount = 0;
+        TransformationNode(&differ->tree->rootTree, &changeCount, differ->variables, differ->tree, text);
+        GenerateImage(differ);
+    } while (changeCount > 0);
+
+    double result = EvaluateExpression(differ->tree->rootTree, differ->variables);
+    printf("answer = %.2lf\n", result);
+}
+
 void FuncFromFile(char* filename, Lines* text)
 {
     Differ differ_before = {};
@@ -21,9 +34,7 @@ void FuncFromFile(char* filename, Lines* text)
     GenerateImage(&differ_before);
 
     double result = 0;
-    differ_before.variables->data[0].value = 3.14;
-    differ_before.variables->data[1].value = 3.14;
-    printf("%.2lf\n", differ_before.variables->data[1].value);
+    differ_before.variables->data[0].value = 2;
     result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
 
     printf("answer = %.2lf\n", result);
@@ -44,16 +55,7 @@ void FuncFromFile(char* filename, Lines* text)
     differ_after.tree->rootTree->parent = NULL;
     PrintTreeLaTex("f'(x) = ", differ_after.tree->rootTree, differ_before.variables, text);
 
-    int changeCount = 0;
-    do {
-        changeCount = 0;
-        TransformationNode(&differ_after.tree->rootTree, &changeCount, differ_after.variables, differ_after.tree, text);
-        GenerateImage(&differ_after);
-    } while (changeCount > 0);
-
-    printf("%.2lf\n", differ_before.tree->rootTree->left->value);
-    result = EvaluateExpression(differ_after.tree->rootTree, differ_after.variables);
-    printf("answer = %.2lf\n", result);
+    TransformAndEvaluate(&differ_after, text);
 
     TreeAndVarieblesDtor(&differ_after);
     TreeAndVarieblesDtor(&differ_before);
@@ -72,9 +74,9 @@ int main()
 
     DifferOperat(&text);
 
-    FuncFromFile("./file/defInf3.txt", &text);
-    FuncFromFile("./file/defInf.txt", &text);
+    //FuncFromFile("./file/defInf3.txt", &text);
+    //FuncFromFile("./file/defInf.txt", &text);
     FuncFromFile("./file/defInf1.txt", &text);
-    FuncFromFile("./file/defInf2.txt", &text);
+    //FuncFromFile("./file/defInf2.txt", &text);
     return 0;
 }
