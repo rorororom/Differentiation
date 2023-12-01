@@ -26,7 +26,8 @@ SET_OPERATOR("div", DIV, "/",
     {
         if (rightValue == 0)
         {
-            printf("делить на ноль нельзя (запрещено на территории РФ с 23:00 до 07:00 по четным дням согласно ст. УК 000-00 от 00.00.0000 г.)\n");
+            printf("делить на ноль нельзя (запрещено на территории РФ с 23:00 до 07:00\
+                    по четным дням согласно ст. УК 000-00 от 00.00.0000 г.)\n");
             return 0;
         }
         else return leftValue / rightValue;
@@ -41,11 +42,11 @@ SET_OPERATOR("pow", POW, "^",
         return FastPower((int)leftValue, (int)rightValue);
     },
     {
-        if (NLT == VAR || NLT == OPERAT)
+        if (NN_L_TYPE == VAR || NN_L_TYPE == OPERAT)
         {
             return _MUL(_MUL(COPYR, _POW(COPYL, _SUB(COPYR, NODE_INT(1)))), DIFL);
         }
-        else if ((NLT == CONST || NLT == INT) && NLT == VAR)
+        else if ((NN_L_TYPE == CONST || NN_L_TYPE == INT) && NN_L_TYPE == VAR)
         {
             return _MUL(_POW(COPYL, COPYR), NewNode(OPERAT, LN, nowNode->left, NULL));
         }

@@ -18,22 +18,72 @@ $$arctg(x)' =  \frac { 1 } { 1 + x ^ { 2 } } $$
 $$arccot(x)' =  \frac { -1 \cdot 1 } { 1 + x ^ { 2 } } $$
 $$ln(x)' =  \frac { 1 } { x } \cdot 1 $$
 $\text{Как говорится, ну вот:}$
-$$f(x) =  ( sin( 15 \cdot x + 6 ) ) ^ { 3 } + cos( x ^ { 3 } - 9 ) $$
-$\text{Как говорится, ну вот:}$
-$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 3 - 1 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
-$\text{Легко заметить, что}$
-$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
-$\text{Производная этой части выражена явно через следующее математическое выражение:}$
-$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
-$\text{Главное спокойно дышать, тогда можно получить: }$
-$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$$f(x) =  \frac { arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) } { 5 + 6 \cdot sin( x ) } $$
 $\text{При упрощении получаем:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 \cdot x - 1 \cdot 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot 1 \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 \cdot 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot 1 \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Производная этой части выражена явно через следующее математическое выражение:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot 1 \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Как же сложно жить, когда в сутках 24 часа, было бы больше, стало бы легче!}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Как говорится, ну вот:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{После некоторых методов диференцирования функции мы получили математическое выражение:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 \cdot sin( x ) + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 6 \cdot cos( x ) \cdot 1 } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  \frac { ( \frac { \frac { 0 - 1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 6 \cdot cos( x ) } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Дифференцируй, как будто твоя жизнь зависит от этого... и, возможно, она действительно зависит...}$
+$$f'(x) =  \frac { ( \frac { \frac { -1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 0 + 6 \cdot cos( x ) } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Как говорится, ну вот:}$
+$$f'(x) =  \frac { ( \frac { \frac { -1 } { x ^ { 2 } } } { 1 + ( \frac { 1 } { x } ) ^ { 2 } } + cos( x ) \cdot cos( x ) + sin( x ) \cdot -1 \cdot sin( x ) ) * 5 + 6 \cdot sin( x ) - ( arctan( \frac { 1 } { x } ) + sin( x ) \cdot cos( x ) ) * 6 \cdot cos( x ) } { ( 5 + 6 \cdot sin( x ) ) ^ { 2 } } $$
+$\text{Когда производная говорит 'прыгни', не спрашивай 'почему', просто прыгай!}$
+$$f(x) =  ( sin( 15 \cdot x + 6 ) ) ^ { 3 } + cos( x ^ { 3 } - 9 ) $$
+$\text{Когда дифференцируешь, представь, что твои переменные – это твои любимые пельмени, и ты их разделяешь, чтобы узнать их секретный рецепт.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 3 - 1 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{После некоторых методов диференцирования функции мы получили математическое выражение:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда дифференцируешь, представь, что твои переменные – это твои любимые пельмени, и ты их разделяешь, чтобы узнать их секретный рецепт.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Как говорится, ну вот:}$
 $$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
-$\text{Как говорится, ну вот:}$
+$\text{После некоторых методов диференцирования функции мы получили математическое выражение:}$
 $$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 3 - 1 } \cdot 1 $$
-$\text{Легко заметить, что}$
+$\text{Как же сложно жить, когда в сутках 24 часа, было бы больше, стало бы легче!}$
 $$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } \cdot 1 $$
-$\text{Как говорится, ну вот:}$
+$\text{Дифференцируй, как будто твоя жизнь зависит от этого... и, возможно, она действительно зависит...}$
 $$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } \cdot 1 $$
-$\text{Продефференцируем данную часть исходной функции:}$
+$\text{Дифференцируй, как будто твоя жизнь зависит от этого... и, возможно, она действительно зависит...}$
 $$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f(x) =  ( sin( 15 \cdot x + 6 ) ) ^ { 3 } + cos( x ^ { 3 } - 9 ) $$
+$\text{Когда дифференцируешь, представь, что твои переменные – это твои любимые пельмени, и ты их разделяешь, чтобы узнать их секретный рецепт.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 3 - 1 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Производная этой части выражена явно через следующее математическое выражение:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Дифференцируй, как будто твоя жизнь зависит от этого... и, возможно, она действительно зависит...}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ^ { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 3 - 1 } \cdot 1 $$
+$\text{Дифференцируй, как будто твоя жизнь зависит от этого... и, возможно, она действительно зависит...}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } \cdot 1 $$
+$\text{После некоторых методов диференцирования функции мы получили математическое выражение:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } \cdot 1 $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ^ { 3 } - 9 ) \cdot 3 \cdot x ^ { 2 } $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f(x) =  \frac { sin( x ) } { cos( x ) } $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  \frac { cos( x ) \cdot 1 \cdot cos( x ) - sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 } { ( cos( x ) ) ^ { 2 } } $$
+$\text{Когда производная говорит 'прыгни', не спрашивай 'почему', просто прыгай!}$
+$$f'(x) =  \frac { cos( x ) \cdot cos( x ) - sin( x ) \cdot -1 \cdot sin( x ) \cdot 1 } { ( cos( x ) ) ^ { 2 } } $$
+$\text{Это тривиально}$
+$$f'(x) =  \frac { cos( x ) \cdot cos( x ) - sin( x ) \cdot -1 \cdot sin( x ) } { ( cos( x ) ) ^ { 2 } } $$

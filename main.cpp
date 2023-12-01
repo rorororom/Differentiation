@@ -74,9 +74,10 @@ int main()
 
     DifferOperat(&text);
 
-    //FuncFromFile("./file/defInf3.txt", &text);
-    //FuncFromFile("./file/defInf.txt", &text);
+    FuncFromFile("./file/defInf3.txt", &text);
+    FuncFromFile("./file/defInf.txt", &text);
     FuncFromFile("./file/defInf1.txt", &text);
-    //FuncFromFile("./file/defInf2.txt", &text);
+    FuncFromFile("./file/defInf2.txt", &text);
+
     return 0;
 }

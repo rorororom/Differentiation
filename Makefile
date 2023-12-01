@@ -1,5 +1,5 @@
 CXX = g++-13
-EXECUTABLE = list
+EXECUTABLE = dif
 CXXFLAGS =  -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 			-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts       \
 			-Wconditionally-supported -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal  \
@@ -36,7 +36,7 @@ run:
 	./$(EXECUTABLE)
 
 run_and_gen_image:
-	./$(EXECUTABLE)
+	./$(EXECUTABLE) -I/path/to/gnuplot -L/path/to/gnuplot/lib -lgnuplot
 	dot -Tpng /Users/aleksandr/Desktop/akinator/graph.dot -o file.png
 
 clean:
