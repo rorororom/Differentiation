@@ -1,15 +1,8 @@
+plot 3.00 * sin( ( 15.00 * x + 6.00 ) ) ** ( 3.00 - 1.00 ) * cos( ( 15.00 * x + 6.00 ) ) * ( 0.00 * x + 15.00 * 1.00 + 0.00 ) + -1.00 * sin( ( x ** 3.00 - 9.00 ) ) * ( 3.00 * x ** ( 3.00 - 1.00 ) * 1.00 - 0.00 ) 
 #! /opt/homebrew/Cellar/gnuplot -persist
 reset
 set terminal png size 800, 600
-set output 'img/img1_2053.png'
-set xlabel "X"
-set ylabel "Y"
-set grid
-plot sin(x)
-#! /opt/homebrew/Cellar/gnuplot -persist
-reset
-set terminal png size 800, 600
-set output 'img/img1_2539.png'
+set output 'img/img2_59768.png'
 set xlabel "X"
 set ylabel "Y"
 set grid

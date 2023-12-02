@@ -37,7 +37,7 @@ SET_OPERATOR("div", DIV, "/",
                _MUL(COPYL, DIFR)),
                _POW(COPYR, NODE_INT(2)));
     })
-SET_OPERATOR("pow", POW, "^",
+SET_OPERATOR("pow", POW, "**",
     {
         return FastPower((int)leftValue, (int)rightValue);
     },

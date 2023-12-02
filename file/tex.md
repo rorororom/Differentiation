@@ -10,10 +10,30 @@
 Таблица производных, которой мы будем пользоваться:
 $$sin(x)' =  cos( x ) \cdot 1 $$
 $$cos(x)' =  -1 \cdot sin( x ) \cdot 1 $$
-$$tg(x)' =  \frac { 1 } { ( cos( x ) ) ^ { 2 } } \cdot 1 $$
-$$cot(x)' =  \frac { 1 } { ( sin( x ) ) ^ { 2 } } \cdot -1 $$
-$$arcsin(x)' =  \frac { 1 } { \sqrt{ 1 - x ^ { 2 } } } $$
-$$arccos(x)' =  \frac { -1 \cdot 1 } { \sqrt{ 1 - x ^ { 2 } } } $$
-$$arctg(x)' =  \frac { 1 } { 1 + x ^ { 2 } } $$
-$$arccot(x)' =  \frac { -1 \cdot 1 } { 1 + x ^ { 2 } } $$
+$$tg(x)' =  \frac { 1 } { ( cos( x ) ) ** { 2 } } \cdot 1 $$
+$$cot(x)' =  \frac { 1 } { ( sin( x ) ) ** { 2 } } \cdot -1 $$
+$$arcsin(x)' =  \frac { 1 } { \sqrt{ 1 - x ** { 2 } } } $$
+$$arccos(x)' =  \frac { -1 \cdot 1 } { \sqrt{ 1 - x ** { 2 } } } $$
+$$arctg(x)' =  \frac { 1 } { 1 + x ** { 2 } } $$
+$$arccot(x)' =  \frac { -1 \cdot 1 } { 1 + x ** { 2 } } $$
 $$ln(x)' =  \frac { 1 } { x } \cdot 1 $$
+$\text{Очевидно, что получается так:}$
+$$f(x) =  ( sin( 15 \cdot x + 6 ) ) ** { 3 } + cos( x ** { 3 } - 9 ) $$
+$\text{Производная этой части выражена явно через следующее математическое выражение:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 3 - 1 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 $$
+$\text{Это тривиально}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 + ( 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда производная говорит 'прыгни', не спрашивай 'почему', просто прыгай!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 + ( 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 $$
+$\text{Легко заметить, что}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 ) * 3 \cdot x ** { 3 - 1 } \cdot 1 - 0 $$
+$\text{Когда твое уравнение сложное, дифференцирование приносит в жизнь легкость!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ** { 3 } - 9 ) \cdot 3 \cdot x ** { 3 - 1 } \cdot 1 $$
+$\text{Это тривиально}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot ( 0 + 15 ) * 0 + 15 + -1 \cdot sin( x ** { 3 } - 9 ) \cdot 3 \cdot x ** { 2 } \cdot 1 $$
+$\text{При упрощении получаем:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ** { 3 } - 9 ) \cdot 3 \cdot x ** { 2 } \cdot 1 $$
+$\text{Легко заметить, что}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ** { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( x ** { 3 } - 9 ) \cdot 3 \cdot x ** { 2 } $$

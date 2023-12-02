@@ -14,7 +14,7 @@ CXXFLAGS =  -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-
 			-fstack-protector -fstrict-overflow -fno-omit-frame-pointer -Wlarger-than=8192         \
 			-Wstack-usage=8192 -fsanitize=address,leak,undefined -fPIE -Werror=vla
 
-SOURCES = main.cpp log_funcs.cpp differentiation.cpp read_from_file_in_buffer.cpp print_tree.cpp
+SOURCES = main.cpp log_funcs.cpp differentiation.cpp read_from_file_in_buffer.cpp print_tree.cpp vis.cpp
 OBJECTS = $(SOURCES:%.cpp=%.o)
 EXECUTABLE = differentiation.out
 

@@ -57,22 +57,34 @@ void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar)
     if (operationNowNode == ERROR_OP) printf("error operation\n");
 
     if (operationParent > operationNowNode   || ((node->parent->flagDirection == RIGHT) &&
-       (operationParent == operationNowNode) && (node->value == DIV)))
+       (operationParent == operationNowNode) &&  (node->value == DIV)))
         fprintf(file, "( ");
     else if ((node->parent->flagDirection == RIGHT) && (operationParent == operationNowNode)  &&
              (node->value == SUB))
         node->value = ADD;
 
-    node->flagDirection = LEFT;
-    PrintNode(node->left, file, arrayVar);
-    char* operation = IssuesOperation(node);
+    if (5 <= node->value && node->value <= 13)
+    {
+        char* operation = IssuesOperation(node);
+        fprintf(file, "%s( ", operation);
 
-    fprintf(file, "%s ", operation);
+        node->flagDirection = LEFT;
+        PrintNode(node->left, file, arrayVar);
+        fprintf(file, ") ");
+    }
+    else
+    {
+        node->flagDirection = LEFT;
+        PrintNode(node->left, file, arrayVar);
+        char* operation = IssuesOperation(node);
 
-    node->flagDirection = RIGHT;
-    PrintNode(node->right, file, arrayVar);
+        fprintf(file, "%s ", operation);
 
-    if (operationParent> operationNowNode || ((node->parent->flagDirection == RIGHT) &&
+        node->flagDirection = RIGHT;
+        PrintNode(node->right, file, arrayVar);
+    }
+
+    if (operationParent > operationNowNode || ((node->parent->flagDirection == RIGHT) &&
        (operationParent == operationNowNode) && (node->value == DIV)))
     {
         fprintf(file, ") ");
@@ -81,14 +93,26 @@ void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar)
 
 void PrintParentNull(Node* node, FILE* file, Variables* arrayVar)
 {
-    node->flagDirection = LEFT;
-    PrintNode(node->left, file, arrayVar);
+    if (5 <= node->value && node->value <= 13)
+    {
+        char* operation = IssuesOperation(node);
+        fprintf(file, "%s( ", operation);
 
-    char* operation = IssuesOperation(node);
+        node->flagDirection = LEFT;
+        PrintNode(node->left, file, arrayVar);
+        fprintf(file, ") ");
+    }
+    else
+    {
+        node->flagDirection = LEFT;
+        PrintNode(node->left, file, arrayVar);
 
-    node->flagDirection = RIGHT;
-    fprintf(file, "%s ", operation);
-    PrintNode(node->right, file, arrayVar);
+        char* operation = IssuesOperation(node);
+
+        node->flagDirection = RIGHT;
+        fprintf(file, "%s ", operation);
+        PrintNode(node->right, file, arrayVar);
+    }
 }
 
 void PrintInFileInfForm(Node* node, Variables* arrayVar)
