@@ -1,0 +1,15 @@
+#! /opt/homebrew/Cellar/gnuplot -persist
+reset
+set terminal png size 800, 600
+set output 'img/img1_2053.png'
+set xlabel "X"
+set ylabel "Y"
+set grid
+plot sin(x)
+#! /opt/homebrew/Cellar/gnuplot -persist
+reset
+set terminal png size 800, 600
+set output 'img/img1_2539.png'
+set xlabel "X"
+set ylabel "Y"
+set grid
