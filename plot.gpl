@@ -2,7 +2,7 @@ plot 3.00 * sin( ( 15.00 * x + 6.00 ) ) ** ( 3.00 - 1.00 ) * cos( ( 15.00 * x + 
 #! /opt/homebrew/Cellar/gnuplot -persist
 reset
 set terminal png size 800, 600
-set output 'img/img2_59768.png'
+set output 'img/img2_58305.png'
 set xlabel "X"
 set ylabel "Y"
 set grid

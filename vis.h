@@ -1,3 +1,6 @@
+#ifndef VISUAL
+#define VISUAL
+
 #include "stdio.h"
 
 #define MAX_IMG_FILE_LEN 256
@@ -16,4 +19,4 @@ void StartGraph(FILE* dotf);
 void MakeImgFromDot(const char* dot_file);
 void StartGraph(FILE* dotf);
 void EndGraph(FILE* dotf);
-
+#endif

@@ -85,7 +85,7 @@ void CreatePlotScript(const char* script_file, const char* equation) {
 }
 
 int VisCreat(const char* equation) {
-    const char* gpl_file = "sin_plot.gpl";
+    const char* gpl_file = "plot.gpl";
     CreatePlotScript(gpl_file, equation);
 
     char* img_name = GenImgName();

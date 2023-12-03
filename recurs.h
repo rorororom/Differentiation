@@ -1,8 +1,16 @@
-char* s = NULL;
-int p = 0;
+#ifndef RECURS
+#define RECURS
 
-int GetG(const char* str);
-int GetE();
-int GetN();
-int GetT();
-int GetP();
+#include "differentiation.h"
+
+const int OP_LEN = 10;
+
+void BuildTREEEE(char* filename);
+Node* GetG(const char* str);
+Node* GetE();
+Node* GetN();
+Node* GetT();
+Node* GetP();
+Node* GetO();
+//void BuildTREEEE(char* filename);
+#endif

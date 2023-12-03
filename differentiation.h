@@ -8,7 +8,7 @@
 
 const int MAX_LEN = 256;
 const int MAX_VARIABLES = 10;
-const int capacity = 10;
+const int CAPACITY = 10;
 const int ZERO = 0;
 const double E_CONST = 2.71;
 const int ERROR_OP = -100;
@@ -79,11 +79,16 @@ void ClearFile(const char* filename);
 void DifferOperat(Lines* text);
 void PrintFunc(const char* expression, Node* node, Variables* arrayVar, FILE* file);
 
+void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent);
+
 Node* NewNode(int type, double value, Node* left, Node* right);
 void SetParentPointers(Node* node, Node* parent);
 Node* Copy(Node* nowNode);
 Node* Dif(Node* nowNode);
 void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif, Lines* text);
+
+int GetVariableIdByName(Variables* arrayVar, const char* variableName);
+int AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue);
 
 Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 

@@ -7,6 +7,7 @@
 #include "log_funcs.h"
 #include "print_tree.h"
 #include "vis.h"
+#include "recurs.h"
 
 void Visual(const char* filename);
 
@@ -33,39 +34,40 @@ void FuncFromFile(char* filename, Lines* text)
 
     CtorRootAndVariebles(&differ_before);
 
-    BuildTreeFromFile(filename, &differ_before);
-    GenerateImage(&differ_before);
-    PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
-    Visual("./file/fileOutput.txt");
-
-    double result = 0;
-    differ_before.variables->data[0].value = 2;
-    result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
-
-    printf("answer = %.2lf\n", result);
-    PrintTreeLaTex("f(x) = ", differ_before.tree->rootTree, differ_before.variables, text);
-
-    Differ differ_after = {};
-    Tree treeDif = {};
-    Variables arrayDif = {};
-    differ_after.tree = &treeDif;
-    differ_after.variables = &arrayDif;
-
-    CtorRootAndVariebles(&differ_after);
-    differ_after.variables = differ_before.variables;
-
-    differ_after.tree->rootTree = Dif(differ_before.tree->rootTree);
-    SetParentPointers(differ_after.tree->rootTree, NULL);
-    GenerateImage(&differ_after);
-    differ_after.tree->rootTree->parent = NULL;
-    PrintTreeLaTex("f'(x) = ", differ_after.tree->rootTree, differ_before.variables, text);
-    PrintTreeToFileWithoutBrackets(differ_after.tree->rootTree, differ_after.variables);
-    Visual("./file/fileOutput.txt");
-
-    TransformAndEvaluate(&differ_after, text);
-
-    TreeAndVarieblesDtor(&differ_after);
-    TreeAndVarieblesDtor(&differ_before);
+    BuildTREEEE("./file/defInf4.txt");
+//     BuildTreeFromFile(filename, &differ_before);
+//     GenerateImage(&differ_before);
+//     PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
+//     Visual("./file/fileOutput.txt");
+//
+//     double result = 0;
+//     differ_before.variables->data[0].value = 2;
+//     result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
+//
+//     printf("answer = %.2lf\n", result);
+//     PrintTreeLaTex("f(x) = ", differ_before.tree->rootTree, differ_before.variables, text);
+//
+//     Differ differ_after = {};
+//     Tree treeDif = {};
+//     Variables arrayDif = {};
+//     differ_after.tree = &treeDif;
+//     differ_after.variables = &arrayDif;
+//
+//     CtorRootAndVariebles(&differ_after);
+//     differ_after.variables = differ_before.variables;
+//
+//     differ_after.tree->rootTree = Dif(differ_before.tree->rootTree);
+//     SetParentPointers(differ_after.tree->rootTree, NULL);
+//     GenerateImage(&differ_after);
+//     differ_after.tree->rootTree->parent = NULL;
+//     PrintTreeLaTex("f'(x) = ", differ_after.tree->rootTree, differ_before.variables, text);
+//     PrintTreeToFileWithoutBrackets(differ_after.tree->rootTree, differ_after.variables);
+//     Visual("./file/fileOutput.txt");
+//
+//     TransformAndEvaluate(&differ_after, text);
+//
+//     TreeAndVarieblesDtor(&differ_after);
+//     TreeAndVarieblesDtor(&differ_before);
 }
 
 int main()
@@ -84,7 +86,7 @@ int main()
     // FuncFromFile("./file/defInf3.txt", &text);
     // FuncFromFile("./file/defInf.txt", &text);
     // FuncFromFile("./file/defInf1.txt", &text);
-    FuncFromFile("./file/defInf1.txt", &text);
+    FuncFromFile("./file/defInf4.txt", &text);
     return 0;
 }
 
@@ -105,5 +107,6 @@ void Visual(const char* filename)
 
     VisCreat(array.buffer);
 }
+
 
 

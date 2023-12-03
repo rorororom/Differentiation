@@ -4,76 +4,115 @@
 
 #include "recurs.h"
 #include "read_from_file_in_buffer.h"
+#include "differentiation.h"
+#include "print_tree.h"
 
-int GetG(const char* str)
+char* s = NULL;
+int p = 0;
+Variables arrayVar;
+int size = 0;
+
+Node* GetG(const char* str)
 {
     s = strdup(str);
     p = 0;
-    int val =  GetE();
-    if (s[p] != '\0') printf("ошибка\n");
-    return val;
+    Node* node = GetE();
+    if (s[p] != '\0') printf("ошибкаG\n");
+    return node;
 }
 
-int GetE()
+Node* GetE()
 {
-    int val = GetT();
+
+    Node* node = GetT();
     while (s[p] == '+' || s[p] == '-')
     {
+        int old_p = p;
         char op = s[p];
         p++;
-        int val2 = GetT();
-        switch(op)
-        {
-            case '+' : val += val2; break;
-            case '-' : val -= val2; break;
-            default: printf("ошибка");
-        }
-    }
-    return val;
-}
+        Node* node2 = GetT();
 
-int GetT()
-{
-    int val = GetP();
-    while (s[p] == '*' || s[p] == '/')
-    {
-        char op = s[p];
-        p++;
-        int val2 = GetP();
-        switch(op)
-        {
-            case '*' : val *= val2; break;
-            case '/' :
-                if (val2 != 0) {
-                    val /= val2;
-                } else {
-                    printf("ошибка: деление на ноль\n");
-                }
+        CREAT_NODE(operationNode);
+        switch (s[old_p]) {
+            case '+':
+                InitializeNode(operationNode, OPERAT, ADD, NULL, NULL, NULL);
                 break;
-            default: printf("ошибка");
+            case '-':
+                InitializeNode(operationNode, OPERAT, SUB, NULL, NULL, NULL);
+                break;
+            default:
+                printf("ошибкаE\n");
         }
+
+        operationNode->left = node;
+        operationNode->right = node2;
+
+        node = operationNode;
     }
-    return val;
+    return node;
 }
 
-int GetP()
+Node* GetT()
 {
-    int val = 0;
+    Node* node = GetP();
+
+    while (s[p] == '*' || s[p] == '/' || s[p] == '^')
+    {
+        int old_p = p;
+        char op = s[p];
+        p++;
+        Node* node2 = GetP();
+
+        CREAT_NODE(operationNode);
+        switch (s[old_p]) {
+            case '*':
+                InitializeNode(operationNode, OPERAT, MUL, NULL, NULL, NULL);
+                break;
+            case '/':
+                InitializeNode(operationNode, OPERAT, DIV, NULL, NULL, NULL);
+                break;
+            case '^':
+                InitializeNode(operationNode, OPERAT, POW, NULL, NULL, NULL);
+                break;
+            default:
+                printf("ошибкаP\n");
+        }
+
+        operationNode->left = node;
+        operationNode->right = node2;
+        node = operationNode;
+    }
+    return node;
+}
+
+Node* GetP()
+{
+    Node* node = NULL;
+
     if (s[p] == '(')
     {
         p++;
-        val = GetE();
-        if (s[p] != ')') printf("ошибка\n");
+        node = GetE();
+        while (s[p] == ' ') {
+            p++;
+        }
+        if (s[p] != ')') printf("ошибкаP\n");
         p++;
-        return val;
+    }
+    else if ('a' <= s[p] && s[p] <= 'z')
+    {
+        node = GetO();
+        if (node->type == OPERAT)
+            node->left = GetP();
     }
     else
     {
-        return GetN();
+        node = GetN();
     }
+    return node;
 }
 
-int GetN()
+Node* GetN()
 {
     int old_p = p;
     int val = 0;
@@ -81,9 +120,41 @@ int GetN()
     {
         val = val * 10 + s[p] - '0';
         p++;
-        if (p <= old_p) printf("ошибка\n");
+        if (p <= old_p) printf("ошибкаN\n");
     }
-    return val;
+
+    CREAT_NODE(node);
+    InitializeNode(node, INT, val, NULL, NULL, NULL);
+
+    return node;
+}
+
+#define SET_OPERATOR(op, OP, ...)                           \
+    if (5 <= OP && OP <= 13 && strcmp(token, op) == 0)      \
+    {                                                       \
+        InitializeNode(node, OPERAT, OP, NULL, NULL, NULL); \
+        return node;                                        \
+    }
+
+Node* GetO()
+{
+    char token[OP_LEN] = "";
+    int i = 0;
+    while ('a' <= s[p] && s[p] <= 'z')
+    {
+        token[i] = s[p];
+        i++;
+        p++;
+    }
+
+    CREAT_NODE(node);
+
+    #include "operation.dsl"
+    #undef SET_OPERATOR
+
+    int val = AddVariable(&arrayVar, token, 0);
+    InitializeNode(node, VAR, val, NULL, NULL, NULL);
+    return node;
 }
 
 void BuildTREEEE(char* filename)
@@ -100,6 +171,25 @@ void BuildTREEEE(char* filename)
     array.buffer = (char*)calloc(array.size + 1, sizeof(char));
     ReadFileInBuffer(file, &array);
     FillText(&array);
-    int val = GetG(array.buffer);
-    printf("%d\n", val);
+
+    size = array.size;
+    arrayVar.capacity = CAPACITY;
+    arrayVar.size = ZERO;
+    arrayVar.data = (VariableData*)calloc(arrayVar.capacity, sizeof(VariableData));
+
+    Node* node = GetG(array.buffer);
+    Differ differ_before = {};
+    Tree tree = {};
+    Variables arrayV = {};
+    differ_before.tree = &tree;
+    differ_before.variables = &arrayV;
+
+    CtorRootAndVariebles(&differ_before);
+    differ_before.tree->rootTree = node;
+    differ_before.variables = &arrayVar;
+    GenerateImage(&differ_before);
+    PrintTreeToFileWithoutBrackets(node, &arrayVar);
+
+    double result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
+    printf("%lg\n", result);
 }

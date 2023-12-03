@@ -47,12 +47,9 @@ int indexInBufer = 0;
 #define DIFL  Dif(nowNode->left)
 #define DIFR  Dif(nowNode->right)
 
-static void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent);
+//static void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent);
 static void PrintNodeDump(FILE* dotFile, Node* node, Variables* arrayVar, const char* fillColor);
 static void DestroyNode(Node* node);
-
-static double GetVariableIdByName(Variables* arrayVar, const char* variableName);
-static double AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue);
 
 void CtorRootAndVariebles(Differ* differ)
 {
@@ -62,7 +59,7 @@ void CtorRootAndVariebles(Differ* differ)
     InitializeNode(newNode, ZERO, ZERO, NULL, NULL, NULL);
     differ->tree->rootTree = newNode;
 
-    differ->variables->capacity = capacity;
+    differ->variables->capacity = CAPACITY;
     differ->variables->size = ZERO;
     differ->variables->data = (VariableData*)calloc(differ->variables->capacity, sizeof(VariableData));
 }
@@ -134,7 +131,7 @@ void BuildTreeFromFile(const char* filename, Differ* differ)
 }
 
 
-static void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent)
+void InitializeNode(Node* node, int type, int value, Node* left, Node* right, Node* parent)
 {
     assert(node);
 
@@ -203,7 +200,7 @@ void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar)
         SetVariableValue(node, value, arrayVar);
 }
 
-static double AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue)
+int AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue)
 {
     assert(arrayVar);
     assert(variableName);
@@ -219,7 +216,7 @@ static double AddVariable(Variables* arrayVar, const char*  variableName, const 
     return arrayVar->size - 1;
 }
 
-static double GetVariableIdByName(Variables* arrayVar, const char* variableName)
+int GetVariableIdByName(Variables* arrayVar, const char* variableName)
 {
     assert(arrayVar);
     assert(variableName);
@@ -334,7 +331,7 @@ char* GetWord(Buffer* array)
 
     while (indexInBufer < array->size && isspace(array->buffer[indexInBufer])) {indexInBufer++;}
     int cnt = 0;
-    while (indexInBufer+cnt < array->size && !isspace(array->buffer[indexInBufer + cnt])) {cnt++;}
+    while (indexInBufer + cnt < array->size && !isspace(array->buffer[indexInBufer + cnt])) {cnt++;}
 
     char* token = (char*)malloc(cnt + 1);
     memcpy(token, array->buffer + indexInBufer, cnt);
